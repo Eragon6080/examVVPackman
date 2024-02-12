@@ -43,6 +43,9 @@
 		<project.info.reports.plugin>3.4.3</project.info.reports.plugin>
 		<site.plugin>3.12.1</site.plugin>
 		<surefire.plugin.version>2.22.2</surefire.plugin.version>
+		<sonar.organization>eragon6080</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
 	</properties>
 
 	<dependencies>

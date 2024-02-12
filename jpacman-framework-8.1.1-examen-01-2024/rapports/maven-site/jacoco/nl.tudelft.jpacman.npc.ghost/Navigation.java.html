@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Navigation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jpacman-framework</a> &gt; <a href="index.source.html" class="el_package">nl.tudelft.jpacman.npc.ghost</a> &gt; <span class="el_source">Navigation.java</span></div><h1>Navigation.java</h1><pre class="source lang-java linenums">package nl.tudelft.jpacman.npc.ghost;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import nl.tudelft.jpacman.board.Direction;
+import nl.tudelft.jpacman.board.Square;
+import nl.tudelft.jpacman.board.Unit;
+
+<span class="nc" id="L12">public final class Navigation {</span>
+
+    private Navigation() {
+    }
+
+    public static List&lt;Direction&gt; shortestPath(Square a, Square b,
+                                               Unit c) {
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (a.equals(b)) {</span>
+<span class="nc" id="L20">            return new ArrayList&lt;&gt;();</span>
+        }
+
+<span class="nc" id="L23">        List&lt;Node&gt; d = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L24">        Set&lt;Square&gt; e = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L25">        d.add(new Node(null, a, null));</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        while (!d.isEmpty()) {</span>
+<span class="nc" id="L27">            Node f = d.remove(0);</span>
+<span class="nc" id="L28">            Square g = f.getSquare();</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            if (g.equals(b)) {</span>
+<span class="nc" id="L30">                return f.getPath();</span>
+            }
+<span class="nc" id="L32">            e.add(g);</span>
+            // Add new targets
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            for (Direction h : Direction.values()) {</span>
+<span class="nc" id="L35">                Square i = g.getSquareAt(h);</span>
+<span class="nc bnc" id="L36" title="All 4 branches missed.">                if (!e.contains(i)</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                    &amp;&amp; (c == null || i.isAccessibleTo(c))) {</span>
+<span class="nc" id="L38">                    d.add(new Node(h, i, f));</span>
+                }
+            }
+<span class="nc" id="L41">        }</span>
+<span class="nc" id="L42">        return null;</span>
+    }
+
+    public static Unit findNearest(Class&lt;? extends Unit&gt; a,
+                                   Square b) {
+<span class="nc" id="L47">        List&lt;Square&gt; c = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L48">        Set&lt;Square&gt; d = new HashSet&lt;&gt;();</span>
+
+<span class="nc" id="L50">        c.add(b);</span>
+
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        while (!c.isEmpty()) {</span>
+<span class="nc" id="L53">            Square e = c.remove(0);</span>
+            // Find units
+<span class="nc" id="L55">            Unit f = null;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            for (Unit g : e.getOccupants()) {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">                if (a.isInstance(g)) {</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                    assert g.hasSquare();</span>
+<span class="nc" id="L59">                    f = g;</span>
+                }
+<span class="nc" id="L61">            }</span>
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (f != null) {</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">                assert f.hasSquare();</span>
+<span class="nc" id="L65">                return f;</span>
+            }
+<span class="nc" id="L67">            d.add(e);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            for (Direction h : Direction.values()) {</span>
+<span class="nc" id="L69">                Square i = e.getSquareAt(h);</span>
+<span class="nc bnc" id="L70" title="All 4 branches missed.">                if (!d.contains(i) &amp;&amp; !c.contains(i)) {</span>
+<span class="nc" id="L71">                    c.add(i);</span>
+                }
+            }
+<span class="nc" id="L74">        }</span>
+<span class="nc" id="L75">        return null;</span>
+    }
+
+    private static final class Node {
+
+        private final Direction x;
+        private final Node y;
+        private final Square z;
+
+<span class="nc" id="L84">        Node(Direction x, Square y, Node z) {</span>
+<span class="nc" id="L85">            this.x = x;</span>
+<span class="nc" id="L86">            this.z = y;</span>
+<span class="nc" id="L87">            this.y = z;</span>
+<span class="nc" id="L88">        }</span>
+
+        private Direction getDirection() {
+<span class="nc" id="L91">            return x;</span>
+        }
+
+        private Square getSquare() {
+<span class="nc" id="L95">            return z;</span>
+        }
+
+        private Node getParent() {
+<span class="nc" id="L99">            return y;</span>
+        }
+
+        private List&lt;Direction&gt; getPath() {
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (y == null) {</span>
+<span class="nc" id="L104">                return new ArrayList&lt;&gt;();</span>
+            }
+<span class="nc" id="L106">            List&lt;Direction&gt; a = y.getPath();</span>
+<span class="nc" id="L107">            a.add(getDirection());</span>
+<span class="nc" id="L108">            return a;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
